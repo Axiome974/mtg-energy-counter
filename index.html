@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#04080d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aether">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>Aether Counter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-aether"></div>
+<div class="bg-grid"></div>
+<div class="bg-vignette"></div>
+
+<main class="app">
+
+    <header class="header">
+        <h1 class="brand">AETHER <span>COUNTER</span></h1>
+    </header>
+
+    <section class="counter" id="counter" aria-label="Compteur d'énergie">
+        <div class="counter-ring"></div>
+        <div class="counter-glow"></div>
+        <div class="counter-symbol" aria-hidden="true"></div>
+        <div class="counter-value" id="value">0</div>
+        <div class="counter-label">ENERGY</div>
+    </section>
+
+    <section class="add-row" aria-label="Ajouter de l'énergie">
+        <button class="btn btn-add" data-add="1"><span class="btn-num">+1</span></button>
+        <button class="btn btn-add" data-add="3"><span class="btn-num">+3</span></button>
+        <button class="btn btn-add" data-add="5"><span class="btn-num">+5</span></button>
+        <button class="btn btn-add" data-add="10"><span class="btn-num">+10</span></button>
+    </section>
+
+    <section class="sub-row" aria-label="Retirer de l'énergie">
+        <button class="btn btn-sub" data-add="-1"><span class="btn-num">−1</span></button>
+        <button class="btn btn-sub" data-add="-3"><span class="btn-num">−3</span></button>
+        <button class="btn btn-sub" data-add="-5"><span class="btn-num">−5</span></button>
+        <button class="btn btn-sub" data-add="-10"><span class="btn-num">−10</span></button>
+    </section>
+
+    <section class="action-row" aria-label="Actions">
+        <button class="btn btn-history" id="historyToggle">
+            <span class="btn-icon" aria-hidden="true">⟲</span>
+            <span class="btn-label">HISTO</span>
+            <span class="hist-dot" id="histDot" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-double" id="double">
+            <span class="btn-icon">×2</span>
+            <span class="btn-label">DOUBLER</span>
+        </button>
+        <button class="btn btn-reset" id="reset">
+            <span class="btn-icon">↺</span>
+            <span class="btn-label">RESET</span>
+        </button>
+    </section>
+
+</main>
+
+<canvas id="particles" class="particles"></canvas>
+<div class="flash" id="flash"></div>
+
+<div class="drawer" id="drawer" hidden>
+    <div class="drawer-backdrop" data-close="true"></div>
+    <aside class="drawer-panel" role="dialog" aria-label="Historique">
+        <div class="drawer-header">
+            <h2 class="drawer-title">HISTORIQUE</h2>
+            <button class="drawer-close" id="drawerClose" aria-label="Fermer">×</button>
+        </div>
+        <button class="undo-btn" id="undoBtn" disabled>
+            <span class="undo-icon" aria-hidden="true">↶</span>
+            <span class="undo-stack">
+                <span class="undo-text">ANNULER</span>
+                <span class="undo-detail" id="undoDetail">—</span>
+            </span>
+        </button>
+        <ul class="history-list" id="historyList" aria-live="polite"></ul>
+        <div class="history-empty" id="historyEmpty">Aucune action enregistrée.</div>
+    </aside>
+</div>
+
+<script src="app.js" type="application/javascript"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        });
+    }
+</script>
+</body>
+</html>
