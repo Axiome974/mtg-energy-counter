@@ -51,17 +51,11 @@ html, body {
 .bg-aether {
     position: fixed; inset: 0;
     background:
-        radial-gradient(ellipse at 50% 25%, rgba(34, 216, 255, 0.28), transparent 55%),
-        radial-gradient(ellipse at 20% 90%, rgba(255, 184, 107, 0.12), transparent 50%),
-        radial-gradient(ellipse at 85% 80%, rgba(34, 216, 255, 0.18), transparent 55%),
+        radial-gradient(ellipse at 50% 25%, rgba(34, 216, 255, 0.24), transparent 55%),
+        radial-gradient(ellipse at 20% 90%, rgba(255, 184, 107, 0.10), transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(34, 216, 255, 0.16), transparent 55%),
         linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
     z-index: -3;
-    animation: aether-shift 14s ease-in-out infinite alternate;
-}
-
-@keyframes aether-shift {
-    0%   { filter: hue-rotate(0deg) brightness(1); }
-    100% { filter: hue-rotate(-12deg) brightness(1.1); }
 }
 
 .bg-grid {
@@ -92,7 +86,8 @@ html, body {
     padding:
         calc(var(--safe-top) + 10px)
         14px
-        calc(var(--safe-bottom) + 12px);
+        calc(var(--safe-bottom) + 2rem)
+;
     display: grid;
     grid-template-rows: auto 1fr auto auto auto;
     gap: 10px;
@@ -107,6 +102,8 @@ html, body {
 }
 
 .brand {
+    padding-top: 2rem;
+
     font-family: 'Audiowide', 'Orbitron', sans-serif;
     font-weight: 400;
     font-size: clamp(18px, 5vw, 24px);
@@ -145,34 +142,19 @@ html, body {
     border-radius: 50%;
     border: 2px solid rgba(var(--energy-rgb), 0.4);
     box-shadow:
-        inset 0 0 40px rgba(var(--energy-rgb), 0.2),
-        0 0 30px rgba(var(--energy-rgb), 0.3),
-        0 0 80px rgba(var(--energy-rgb), 0.18);
+        inset 0 0 30px rgba(var(--energy-rgb), 0.18),
+        0 0 22px rgba(var(--energy-rgb), 0.28);
     background:
         radial-gradient(circle at 50% 50%, rgba(10, 31, 51, 0.9) 0%, rgba(4, 8, 13, 0.6) 70%);
-    backdrop-filter: blur(2px);
     transition: border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
-.counter-ring::before,
-.counter-ring::after {
+.counter-ring::before {
     content: '';
     position: absolute;
     inset: -8px;
     border-radius: 50%;
-    border: 1px dashed rgba(var(--energy-rgb), 0.45);
-    animation: spin 18s linear infinite;
-}
-.counter-ring::after {
-    inset: -18px;
-    border-style: dotted;
-    border-color: rgba(var(--energy-rgb), 0.22);
-    animation-direction: reverse;
-    animation-duration: 28s;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
+    border: 1px solid rgba(var(--energy-rgb), 0.18);
 }
 
 .counter-glow {
@@ -198,16 +180,13 @@ html, body {
     background:
         linear-gradient(135deg,
             rgba(var(--energy-bright-rgb), 1) 0%,
-            rgba(var(--energy-rgb), 1) 45%,
-            rgba(var(--energy-bright-rgb), 1) 100%);
-    -webkit-mask: url('img/pngegg.png') center/contain no-repeat;
-            mask: url('img/pngegg.png') center/contain no-repeat;
-    filter:
-        drop-shadow(0 0 8px rgba(var(--energy-rgb), 0.9))
-        drop-shadow(0 0 18px rgba(var(--energy-rgb), 0.6))
-        drop-shadow(0 0 32px rgba(var(--energy-rgb), 0.35));
+            rgba(var(--energy-rgb), 1) 100%);
+    -webkit-mask: url('img/bolt-mask.png') center/contain no-repeat;
+            mask: url('img/bolt-mask.png') center/contain no-repeat;
+    filter: drop-shadow(0 0 12px rgba(var(--energy-rgb), 0.7));
     animation: float 3.2s ease-in-out infinite;
     transition: background 0.5s ease, filter 0.5s ease;
+    will-change: transform;
 }
 
 @keyframes float {
@@ -222,9 +201,8 @@ html, body {
     line-height: 1;
     color: rgb(var(--energy-bright-rgb));
     text-shadow:
-        0 0 14px rgba(var(--energy-rgb), 0.95),
-        0 0 36px rgba(var(--energy-rgb), 0.65),
-        0 0 64px rgba(var(--energy-rgb), 0.4);
+        0 0 14px rgba(var(--energy-rgb), 0.9),
+        0 0 32px rgba(var(--energy-rgb), 0.45);
     margin-top: 16%;
     transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.4),
                 color 0.5s ease,
@@ -239,8 +217,7 @@ html, body {
     color: #fff;
     text-shadow:
         0 0 20px #fff,
-        0 0 50px rgb(var(--energy-rgb)),
-        0 0 100px rgb(var(--energy-rgb));
+        0 0 50px rgb(var(--energy-rgb));
 }
 
 .counter-label {
@@ -269,9 +246,7 @@ html, body {
 .drawer-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(2, 6, 12, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(2, 6, 12, 0.85);
     opacity: 0;
     animation: backdrop-in 0.25s ease forwards;
 }
@@ -666,20 +641,6 @@ html, body {
     100% { transform: translate(calc(var(--shake-amp) *  0.5), calc(var(--shake-amp) *  0.7)); }
 }
 
-.counter.overcharged .counter-ring {
-    animation: ring-flicker 1.8s ease-in-out infinite;
-}
-
-@keyframes ring-flicker {
-    0%, 100% { box-shadow:
-        inset 0 0 40px rgba(var(--energy-rgb), 0.25),
-        0 0 30px rgba(var(--energy-rgb), 0.4),
-        0 0 80px rgba(var(--energy-rgb), 0.25); }
-    50%      { box-shadow:
-        inset 0 0 60px rgba(var(--energy-rgb), 0.45),
-        0 0 50px rgba(var(--energy-rgb), 0.7),
-        0 0 120px rgba(var(--energy-rgb), 0.4); }
-}
 
 @media (min-height: 800px) {
     .counter { width: min(78vw, 360px); }
@@ -687,4 +648,12 @@ html, body {
 
 @media (min-width: 600px) {
     .app { gap: 20px; padding: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.05s !important;
+    }
 }

@@ -287,6 +287,9 @@
 
         ctx.clearRect(0, 0, els.canvas.width, els.canvas.height);
 
+        // Additive blending — give the particles their glowy feel without per-particle gradients
+        ctx.globalCompositeOperation = 'lighter';
+
         for (let i = particles.length - 1; i >= 0; i--) {
             const p = particles[i];
             p.age += dt;
@@ -299,24 +302,23 @@
             p.vy *= 0.985;
 
             const t = p.age / p.life;
-            const alpha = (1 - t) * 0.95;
-            const r = p.size * (1 + t * 0.6);
+            const alpha = (1 - t);
+            const r = p.size * (1 + t * 0.5);
             const [cr, cg, cb] = p.color;
 
-            const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 4);
-            grd.addColorStop(0,   `rgba(${cr},${cg},${cb},${alpha})`);
-            grd.addColorStop(0.4, `rgba(${cr},${cg},${cb},${alpha * 0.4})`);
-            grd.addColorStop(1,   `rgba(${cr},${cg},${cb},0)`);
-            ctx.fillStyle = grd;
+            // Soft halo + bright core in two simple fills (no gradient)
+            ctx.fillStyle = `rgba(${cr},${cg},${cb},${alpha * 0.25})`;
             ctx.beginPath();
-            ctx.arc(p.x, p.y, r * 4, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, r * 3, 0, Math.PI * 2);
             ctx.fill();
 
-            ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+            ctx.fillStyle = `rgba(255,255,255,${alpha * 0.9})`;
             ctx.beginPath();
             ctx.arc(p.x, p.y, r * 0.7, 0, Math.PI * 2);
             ctx.fill();
         }
+
+        ctx.globalCompositeOperation = 'source-over';
 
         if (particles.length > 0) {
             requestAnimationFrame(tick);
@@ -529,6 +531,31 @@
     els.undoBtn.addEventListener('click', undoLast);
 
     document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    /* ----------------------- FULLSCREEN ----------------------- */
+
+    // When launched as installed PWA, request real fullscreen on the first
+    // user gesture to hide the Android nav bar even if the OS didn't honor
+    // display: fullscreen at install time.
+    function isInstalledPWA() {
+        return window.matchMedia('(display-mode: standalone)').matches ||
+               window.matchMedia('(display-mode: fullscreen)').matches ||
+               window.navigator.standalone === true;
+    }
+
+    function requestFullscreenOnce() {
+        if (!isInstalledPWA()) return;
+        const el = document.documentElement;
+        const req = el.requestFullscreen
+                 || el.webkitRequestFullscreen
+                 || el.msRequestFullscreen;
+        if (req) {
+            try { req.call(el, { navigationUI: 'hide' }); } catch (_) {
+                try { req.call(el); } catch (_) {}
+            }
+        }
+    }
+    document.addEventListener('pointerdown', requestFullscreenOnce, { once: true });
 
     /* ----------------------- INIT ----------------------- */
 

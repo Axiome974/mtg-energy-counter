@@ -1,7 +1,7 @@
 /* Aether Counter — Service Worker
    Cache-first for app shell, runtime cache for everything else (fonts, etc.) */
 
-const CACHE_NAME = 'aether-counter-v1';
+const CACHE_NAME = 'aether-counter-v3';
 
 const APP_SHELL = [
     './',
@@ -9,7 +9,7 @@ const APP_SHELL = [
     './style.css',
     './app.js',
     './manifest.json',
-    './img/pngegg.png',
+    './img/bolt-mask.png',
     './icon-192.png',
     './icon-512.png',
     './icon-maskable-512.png',
