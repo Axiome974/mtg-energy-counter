@@ -135,6 +135,7 @@ html, body {
     border-radius: 50%;
     transition: filter 0.6s ease;
     will-change: transform, filter;
+    cursor: pointer;
 }
 
 .counter-ring {
@@ -443,6 +444,46 @@ html, body {
 }
 .history-empty[hidden] { display: none; }
 .history-list[hidden]  { display: none; }
+
+.drawer-footer {
+    padding: 10px 14px 14px;
+    border-top: 1px solid rgba(var(--energy-rgb), 0.15);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.drawer-secondary {
+    appearance: none;
+    background: rgba(10, 31, 51, 0.5);
+    border: 1px solid rgba(150, 180, 200, 0.3);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 12px 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.12s ease, background 0.2s ease, opacity 0.3s ease;
+}
+.drawer-secondary:active:not(:disabled) { transform: scale(0.96); }
+.drawer-secondary:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    border-style: dashed;
+}
+.drawer-secondary.danger {
+    border-color: rgba(255, 94, 108, 0.4);
+    color: var(--danger);
+}
+.drawer-secondary.danger:not(:disabled):active {
+    background: rgba(255, 94, 108, 0.12);
+}
 
 .add-row,
 .sub-row {

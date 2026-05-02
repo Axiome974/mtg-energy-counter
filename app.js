@@ -21,10 +21,12 @@
         drawerClose:   document.getElementById('drawerClose'),
         historyToggle: document.getElementById('historyToggle'),
         histDot:       document.getElementById('histDot'),
-        undoBtn:       document.getElementById('undoBtn'),
-        undoDetail:    document.getElementById('undoDetail'),
-        historyList:   document.getElementById('historyList'),
-        historyEmpty:  document.getElementById('historyEmpty'),
+        undoBtn:        document.getElementById('undoBtn'),
+        undoDetail:     document.getElementById('undoDetail'),
+        historyList:    document.getElementById('historyList'),
+        historyEmpty:   document.getElementById('historyEmpty'),
+        clearHistoryBtn:document.getElementById('clearHistoryBtn'),
+        quitAppBtn:     document.getElementById('quitAppBtn'),
     };
 
     /* Energy color stops, by absolute energy value:
@@ -152,8 +154,9 @@
         els.historyEmpty.hidden = !empty;
         els.historyList.hidden  = empty;
 
-        // Undo button state
-        els.undoBtn.disabled = empty;
+        // Undo + clear button states
+        els.undoBtn.disabled         = empty;
+        els.clearHistoryBtn.disabled = empty;
         if (empty) {
             els.undoDetail.textContent = '—';
         } else {
@@ -226,6 +229,30 @@
             els.drawer.hidden = true;
             els.drawer.classList.remove('closing');
         }, 250);
+    }
+
+    function clearHistory() {
+        if (history.length === 0) return;
+        history = [];
+        persistHistory();
+        renderHistory();
+        vibrate([10, 30, 10]);
+    }
+
+    function quitApp() {
+        // Exit fullscreen first (visual cleanup) then close the window.
+        if (document.fullscreenElement) {
+            const exit = document.exitFullscreen
+                      || document.webkitExitFullscreen
+                      || document.msExitFullscreen;
+            if (exit) { try { exit.call(document); } catch (_) {} }
+        }
+        closeDrawer();
+        // window.close() works on installed PWAs and on JS-opened windows.
+        // On regular browser tabs it's a no-op (silently ignored).
+        setTimeout(() => {
+            try { window.close(); } catch (_) {}
+        }, 120);
     }
 
     function render() {
@@ -520,6 +547,17 @@
     els.double.addEventListener('click', doubleEnergy);
     els.reset.addEventListener('click', resetEnergy);
 
+    els.counter.addEventListener('click', (e) => {
+        add(1, { x: e.clientX, y: e.clientY });
+    });
+    els.counter.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const c = counterCenter();
+            add(1, { x: c.x, y: c.y });
+        }
+    });
+
     els.historyToggle.addEventListener('click', openDrawer);
     els.drawerClose.addEventListener('click', closeDrawer);
     els.drawer.addEventListener('click', (e) => {
@@ -529,6 +567,8 @@
         if (e.key === 'Escape' && !els.drawer.hidden) closeDrawer();
     });
     els.undoBtn.addEventListener('click', undoLast);
+    els.clearHistoryBtn.addEventListener('click', clearHistory);
+    els.quitAppBtn.addEventListener('click', quitApp);
 
     document.addEventListener('contextmenu', (e) => e.preventDefault());
 

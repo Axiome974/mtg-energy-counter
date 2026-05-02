@@ -1,7 +1,7 @@
 /* Aether Counter — Service Worker
    Cache-first for app shell, runtime cache for everything else (fonts, etc.) */
 
-const CACHE_NAME = 'aether-counter-v3';
+const CACHE_NAME = 'aether-counter-v5';
 
 const APP_SHELL = [
     './',

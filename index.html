@@ -31,7 +31,7 @@
         <h1 class="brand">AETHER <span>COUNTER</span></h1>
     </header>
 
-    <section class="counter" id="counter" aria-label="Compteur d'énergie">
+    <section class="counter" id="counter" role="button" tabindex="0" aria-label="Ajouter 1 d'énergie">
         <div class="counter-ring"></div>
         <div class="counter-glow"></div>
         <div class="counter-symbol" aria-hidden="true"></div>
@@ -54,9 +54,9 @@
     </section>
 
     <section class="action-row" aria-label="Actions">
-        <button class="btn btn-history" id="historyToggle">
-            <span class="btn-icon" aria-hidden="true">⟲</span>
-            <span class="btn-label">HISTO</span>
+        <button class="btn btn-history" id="historyToggle" aria-label="Ouvrir le menu">
+            <span class="btn-icon" aria-hidden="true">≡</span>
+            <span class="btn-label">MENU</span>
             <span class="hist-dot" id="histDot" aria-hidden="true"></span>
         </button>
         <button class="btn btn-double" id="double">
@@ -76,9 +76,9 @@
 
 <div class="drawer" id="drawer" hidden>
     <div class="drawer-backdrop" data-close="true"></div>
-    <aside class="drawer-panel" role="dialog" aria-label="Historique">
+    <aside class="drawer-panel" role="dialog" aria-label="Menu">
         <div class="drawer-header">
-            <h2 class="drawer-title">HISTORIQUE</h2>
+            <h2 class="drawer-title">MENU</h2>
             <button class="drawer-close" id="drawerClose" aria-label="Fermer">×</button>
         </div>
         <button class="undo-btn" id="undoBtn" disabled>
@@ -90,6 +90,16 @@
         </button>
         <ul class="history-list" id="historyList" aria-live="polite"></ul>
         <div class="history-empty" id="historyEmpty">Aucune action enregistrée.</div>
+        <div class="drawer-footer">
+            <button class="drawer-secondary danger" id="clearHistoryBtn" disabled>
+                <span aria-hidden="true">🗑</span>
+                <span>VIDER</span>
+            </button>
+            <button class="drawer-secondary" id="quitAppBtn">
+                <span aria-hidden="true">⏻</span>
+                <span>QUITTER</span>
+            </button>
+        </div>
     </aside>
 </div>
 
